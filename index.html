@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclame Mesa</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reclame Aqui Mesa</title>
+    <title>TODOLIST</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -21,22 +29,33 @@
                         <input type="checkbox" id="is-importante" v-model="novoItemImportante">
                         <label for="is-importante"> Importante</label><br>
                     </div>
+
                     <button @click="salvarNovoItem" v-if="textoNovoItem.length > 0">
                         Reclamar
                     </button>
+
                 </div>
+
+
                 <p id="contagem">{{ qtdeDigitada }}/100</p>
             </div>
+
             <div id="list-wrapper">
+
                 <div class="item" v-bind:class="{importante : item.importante, feito: item.feito}" v-for="item in lista"
-                    v-on:click="toggleFeito(item)">
+                    v-on:click="item.feito = !item.feito">
+
                     <p class="texto-item" v-text="item.texto"></p>
+
                 </div>
+
             </div>
+
+
         </div>
     </div>
-
     <script src="https://unpkg.com/vue@3.0.0-rc.5/dist/vue.global.js"></script>
+
     <script>
         Vue.createApp({
             methods: {
@@ -51,28 +70,30 @@
                         this.lista.push(novoItem);
                         this.textoNovoItem = "";
                         this.novoItemImportante = false;
-                        this.atualizarLocalStorage();
                     }
                 },
-                toggleFeito(item) {
-                    item.feito = !item.feito;
-                    this.atualizarLocalStorage();
-                },
-                atualizarLocalStorage() {
-                    localStorage.setItem("lista", JSON.stringify(this.lista));
-                },
-                carregarLocalStorage() {
-                    const dadosArmazenados = localStorage.getItem("lista");
-                    if (dadosArmazenados) {
-                        this.lista = JSON.parse(dadosArmazenados);
-                    }
-                }
             },
             data() {
                 return {
                     textoNovoItem: "",
                     novoItemImportante: false,
-                    lista: []
+                    lista: [
+                        {
+                            texto: "Item importante",
+                            importante: true,
+                            feito: false,
+                        },
+                        {
+                            texto: "Item feito",
+                            importante: false,
+                            feito: true,
+                        },
+                        {
+                            texto: "Item a fazer",
+                            importante: false,
+                            feito: false,
+                        },
+                    ],
                 };
             },
             computed: {
@@ -80,11 +101,10 @@
                     return this.textoNovoItem.length;
                 }
             },
-            mounted() {
-                this.carregarLocalStorage();
-            }
-        }).mount("#app");
+        }).mount("#app")
     </script>
 </body>
 
+</html>
+</body>
 </html>
